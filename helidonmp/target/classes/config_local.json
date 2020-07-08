@@ -1,0 +1,7 @@
+{
+  "url": "jdbc:postgresql://127.0.0.1:5310/",
+  "name": "hello_world",
+  "user": "labuser",
+  "password": "",
+  "useHikari": true
+}

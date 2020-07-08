@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>HelidonMP Benchmarking</title>
+
+	<style type="text/css">
+		table {
+			border-collapse: collapse;
+			text-align: center;
+			margin: 3px;
+		}
+
+		table, th, td {
+			border: 1px solid black;
+			padding: 5px;
+		}
+	</style>
+
+</head>
+<body>
+
+<h2>
+	HelidonMicroProfile Benchmarking with TFB (TechEmpower Framework Benchmarks)
+</h2>
+
+<br>
+<hr>
+
+<h3 id="outline">
+	Outline
+</h3>
+<ul>
+	<li>
+		<a href="#getting_started">
+			Getting Started
+		</a>
+		<ul>
+			<li>
+				<a href="#setting_up_tfb">
+					Setting up TFB
+				</a>
+			</li>
+			<li>
+				<a href="#testing_the_implementation">
+					Testing the implementation
+				</a>
+			</li>
+			<li>
+				<a href="#visualizing_the_results">
+					Visualizing the results
+				</a>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<a href="#extending_the_codebase">
+			Extending the codebase
+		</a>
+		<ul>
+			<li>
+				<a href="#directory_structure">
+					Directory structure
+				</a>
+			</li>
+			<li>
+				<a href="#implementing_from_scratch">
+					Implementing a TFB test from scratch
+				</a>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<a href="#results_so_far">
+			Results achieved so far
+		</a>
+		<ul>
+			<li>
+				<a href="#helidon_mp">
+					Comparing different versions of HelidonMP implementation
+				</a>
+			</li>
+			<li>
+				<a href="#helidon_se_vs_mp">
+					Comparing HelidonSE with HelidonMP
+				</a>
+			</li>
+			<li>
+				<a href="#helidon_mp_vs_mp">
+					Comparing different versions of HelidonMP
+				</a>
+			</li>
+		</ul>
+	</li>
+</ul>
+
+<br>
+<hr>
+
+<h3 id="getting_started">
+	Getting started
+</h3>
+
+<h4 id="setting_up_tfb">
+	Setting up TFB
+</h4>
+<ol>
+	<li>
+		Clone the <a href="https://github.com/TechEmpower/FrameworkBenchmarks">
+	TFB repository</a> on your local machine
+	</li>
+	<li>
+		Navigate to the cloned directory
+	</li>
+	<li>
+		Run the below command (may require superuser privileges) 
+		to create a new TFB test
+		<br> &emsp;
+		<em> ./tfb --new </em>
+	</li>
+	<li>
+		Provide the following details when prompted
+		<br> &emsp; 
+		Name - <em>helidonmp</em>
+		<br> &emsp; 
+		Language - <em>Java</em>
+		<br> &emsp; 
+		Approach - <em>Realistic</em>
+		<br> &emsp; 
+		Classification - <em>Micro</em>
+		<br> &emsp; 
+		Platform - <em>Netty</em>
+		<br> &emsp; 
+		Database - <em>postgres</em>
+		<br> &emsp; 
+		ORM - <em>Raw</em>
+		<br> &emsp; 
+		Webserver - <em>Leave it blank</em>
+		<br> &emsp;
+		Versus - <em>Netty</em>
+		<br> &emsp;
+		Initialize - <em>Yes</em>
+	</li>
+	<li>
+		The above steps would create the following directory structure
+		<br> &emsp;
+		<em>frameworks/Java/helidonmp/</em>
+		<br> &emsp; ---
+		<em>benchmark_config.json</em>
+		<br> &emsp; ---
+		<em>README.md</em>
+	</li>
+</ol>
+
+<h4 id="testing_the_implementation">
+	Testing the implementation
+</h4>
+<ol>
+	<li>
+		Copy the implementation to the directory
+		<br> &emsp;
+		<em>frameworks/Java/helidonmp/</em>
+	</li>
+	<li>
+		The implementation would replace the existing files
+	</li>
+	<li>
+		Test the implementation by running the following command (may require superuser privileges)
+		<br> &emsp;
+		<em>./tfb --mode verify --test helidonmp</em>
+	</li>
+	<li>
+		The above steps would run the implementation against the TFB tests and produce a summary of the results
+	</li>
+</ol>
+
+<h4 id="visualizing_the_results">
+	Visualizing the results
+</h4>
+<ol>
+	<li>
+		Run the implementation using the following command to store the results in <em>results.txt</em> file
+		<br> &emsp;
+		<em>./tfb --mode verify --test helidonmp > results.txt</em>
+	</li>
+	<li>
+		Run the above command with the different versions to compare, changing the ouput file name in each run
+	</li>
+	<li>
+		Specify all the output files in the files list of <em>visualize.py</em>
+	</li>
+	<li>
+		The results of the first file will be taken as a reference
+	</li>
+	<li>
+		Run the python script using the following command
+		<br> &emsp;
+		<em>python3 visualize.py</em>
+	</li>
+	<li>
+		This would produce the graphs for the TFB tests performed
+	</li>
+</ol>
+
+<br>
+<hr>
+
+<h3 id="extending_the_codebase">
+	Extending the codebase
+</h3>
+
+<h4 id="directory_structure">
+	Directory structure
+</h4>
+
+<em>helidonmp/</em>
+<ul>
+	<li>
+		<em>benchmark_config.json</em> : Configure TFB tests
+	</li>
+	<li>
+		<em>pom.xml</em> : Maven POM file 
+	</li>
+	<li>
+		<em>helidonmp.dockerfile</em> : Dockerfile used by TFB
+	</li>
+</ul>
+
+<em>helidonmp/src/main/resources/</em>
+<ul>
+	<li>
+		<em>config.json</em> : Configuration for the implementation
+	</li>
+	<li>
+		<em>fortunes.moustache</em> : Moustache template for Fortunes TFB test
+	</li>
+</ul>
+
+<em>helidonmp/src/main/java/io/helidon/</em>
+<ul>
+	<li>
+		<em>ApplicationHandler.java</em> : Implements an application scoped class that lists all the services provided in the implementation
+	</li>
+	<li>
+		<em>Main.java</em> : Setup logging and start the netty server
+	</li>
+	<li>
+		<em>interfaces/</em>
+		<ul>
+			<li>
+				<em>DatabaseInterface.java</em> : Interface to be implemented for database configuration
+			</li>
+			<li>
+				<em>FortuneInterface.java</em> : Interface for TFB Fortunes test
+			</li>
+			<li>
+				<em>WorldInterface.java</em> : Interface for TFB World test
+			</li>
+		</ul>
+	</li>
+	<li>
+		<em>models/</em>
+		<ul>
+			<li>
+				<em>DatabaseModel.java</em> : POJO class for the database object
+			</li>
+			<li>
+				<em>FortuneModel.java</em> : POJO class for Fortune objects
+			</li>
+		</ul>
+	</li>
+	<li>
+		<em>config/</em>
+		<ul>
+			<li>
+				<em>DatabaseConfigWithHikari.java</em> : Implementation of DatabaseInterface using Hikari Connection Pooling
+			</li>
+			<li>
+				<em>DatabaseConfigWithoutHikari.java</em> : Implementation of DatabaseInterface using JDBC
+			</li>
+			<li>
+				<em>FortuneConfigWithHikari.java</em> : Implements FortuneInterface and extends DatabaseConfigWithHikari to provide methods for interaction with Fortune table
+			</li>
+			<li>
+				<em>WorldConfigWithHikari.java</em> : Implements WorldInterface and extends DatabaseConfigWithHikari to provide methods for interaction with World table
+			</li>
+		</ul>
+	</li>
+	<li>
+		<em>services/</em>
+		<ul>
+			<li>
+				<em>FortuneService.java</em> : Request scoped class that uses a version of FortuneConfig to test TFB Fortunes test
+			</li>
+			<li>
+				<em>JsonService.java</em> : Implementation for TFB JSON test
+			</li>
+			<li>
+				<em>PlaintextService.java</em> : Implementation for TFB Plaintext test
+			</li>
+			<li>
+				<em>RandomNumberService.java</em> : Class to generate random number
+			</li>
+			<li>
+				<em>WorldService.java</em> : Implementation for TFB single query, multiple queries and update tests 
+			</li>
+		</ul>
+	</li>
+</ul>
+
+<h4 id="implementing_from_scratch">
+	Implementing a TFB test from scratch 
+</h4>
+
+<ol>
+	<li>
+		Declare an interface in <em>interfaces/</em>
+	</li>
+	<li>
+		Create a model for the test if required in <em>models/</em>
+	</li>
+	<li>
+		Implement a database class (preferably with a corresponding interface) in <em>config/</em> or use one of those provided
+	</li>
+	<li>
+		Implement a test configuration with the required methods to interact with the database in <em>config/</em>
+	</li>
+	<li>
+		The above configuration extends the database configuration
+	</li>
+	<li>
+		Create a service for the test configuration in <em>services/</em>
+	</li>
+	<li>
+		Include this service in the <em>ApplicationHandler</em>
+	</li>
+</ol>
+
+<br>
+<hr>
+
+<h3 id="results_so_far">
+	Results achieved so far
+</h3>
+
+<ul>
+	<li>
+		The important parameters to look out for while comparing implementations are 
+		<ul>
+			<li>
+				<em>Transaction rate</em> : Number of transactions per second
+			</li>
+			<li>
+				<em>Concurrency</em> : Number of threads concurrently processed
+			</li>
+			<li>
+				<em>Response time</em> : Time difference between receiving a request and generating a response
+			</li>
+		</ul>
+	</li>
+
+	<li>
+		There are two versions of HelidonMP used for comparision
+		<ul>
+			<li>
+				Plain JDBC connection to the database with cached statements
+			</li>
+			<li>
+				Hikari Connection Pooling (HikariCP) with cached statements
+			</li>
+		</ul>
+	</li>
+	<li>
+		HelidonMP (with HikariCP) performs almost 2 times better than HelidonMP (with JDBC connectivity) 
+	</li>
+	<li>
+		HelidonSE outperforms HelidonMP (with HikariCP) in every test case on almost all the parameters by a factor of 2
+	</li>
+</ul>
+
+<h4 id="helidon_se_vs_mp">
+	Comparing HelidonSE with HelidonMP
+</h4>
+
+
+<table>
+	<thead>
+		<tr>
+			<th>
+				Test
+			</th>
+			<th>
+				Parameter
+			</th>
+			<th>
+				HelidonMP (1.4.4) with HikariCP
+			</th>
+			<th>
+				HelidonMP (1.4.4) with JDBC
+			</th>
+			<th>
+				HelidonSE (1.4.4)
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td rowspan="3">
+				Single query
+			</td>
+			<td>
+				Transaction rate (transactions / second)
+			</td>
+			<td>
+				301.18
+			</td>
+			<td>
+				130.95
+			</td>
+			<td>
+				588.51
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Concurrency
+			</td>
+			<td>
+				368.92
+			</td>
+			<td>
+				292.88
+			</td>
+			<td>
+				345
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Response time (seconds)
+			</td>
+			<td>
+				1.22
+			</td>
+			<td>
+				2.24					
+			</td>
+			<td>
+				0.59
+			</td>
+		</tr>
+		<tr>
+			<td rowspan="3">
+				Multiple queries
+			</td>
+			<td>
+				Transaction rate (transactions / second)
+			</td>
+			<td>
+				204.8
+			</td>
+			<td>
+				126.73
+			</td>
+			<td>
+				379.26
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Concurrency
+			</td>
+			<td>
+				302.84
+			</td>
+			<td>
+				286.04
+			</td>
+			<td>
+				336.87
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Response time (seconds)
+			</td>
+			<td>
+				1.48
+			</td>
+			<td>
+				2.26					
+			</td>
+			<td>
+				0.89
+			</td>
+		</tr>
+		<tr>
+			<td rowspan="3">
+				Update queries
+			</td>
+			<td>
+				Transaction rate (transactions / second)
+			</td>
+			<td>
+				193.21
+			</td>
+			<td>
+				106.22
+			</td>
+			<td>
+				273.80
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Concurrency
+			</td>
+			<td>
+				303.75
+			</td>
+			<td>
+				283.42
+			</td>
+			<td>
+				323.57
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Response time (seconds)
+			</td>
+			<td>
+				1.57
+			</td>
+			<td>
+				2.67					
+			</td>
+			<td>
+				1.18
+			</td>
+		</tr>
+		<tr>
+			<td rowspan="3">
+				Fortunes
+			</td>
+			<td>
+				Transaction rate (transactions / second)
+			</td>
+			<td>
+				492.31
+			</td>
+			<td>
+				210.70
+			</td>
+			<td>
+				853.33
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Concurrency
+			</td>
+			<td>
+				381.15
+			</td>
+			<td>
+				259
+			</td>
+			<td>
+				385.88
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Response time (seconds)
+			</td>
+			<td>
+				0.77
+			</td>
+			<td>
+				1.23					
+			</td>
+			<td>
+				0.45
+			</td>
+		</tr>	
+	</tbody>
+</table>
+
+<table>
+	<tbody>
+		<tr>
+			<td>
+				<figure>
+					<img src="HelidonSE-DB.png" style="height: 300px; width: 400px;">
+					<figcaption>
+						TFB Single Query Test
+					</figcaption>
+				</figure>
+			</td>
+
+			<td>
+				<figure>
+					<img src="HelidonSE-Query.png" style="height: 300px; width: 400px;">
+					<figcaption>
+						TFB Multiple Queries Test
+					</figcaption>
+				</figure>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<figure>
+					<img src="HelidonSE-Update.png" style="height: 300px; width: 400px;">
+					<figcaption>
+						TFB Update Queries Test
+					</figcaption>
+				</figure>
+			</td>
+
+			<td>
+				<figure>
+					<img src="HelidonSE-Fortune.png" style="height: 300px; width: 400px;">
+					<figcaption>
+						TFB Fortunes Test
+					</figcaption>
+				</figure>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<br>
+
+<h4 id="helidon_mp_vs_mp">
+	Comparision between HelidonMP (1.4.4) and HelidonMP (2.0.0-M3) with HelidonMP (1.4.4) as reference 
+</h4>
+
+<table>
+	<thead>
+		<tr>
+			<th>
+				Test
+			</th>
+			<th>
+				Parameter
+			</th>
+			<th>
+				HelidonMP (1.4.4) with HikariCP
+			</th>
+			<th>
+				HelidonMP (2.0.0-M3) with HikariCP
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td rowspan="3">
+				Single query
+			</td>
+			<td>
+				Transaction rate (transactions / second)
+			</td>
+			<td>
+				301.18
+			</td>
+			<td>
+				247.34
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Concurrency
+			</td>
+			<td>
+				368.92
+			</td>
+			<td>
+				324.46
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Response time (seconds)
+			</td>
+			<td>
+				1.22
+			</td>
+			<td>
+				1.31				
+			</td>
+		</tr>
+		<tr>
+			<td rowspan="3">
+				Multiple queries
+			</td>
+			<td>
+				Transaction rate (transactions / second)
+			</td>
+			<td>
+				204.8
+			</td>
+			<td>
+				192.62
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Concurrency
+			</td>
+			<td>
+				302.84
+			</td>
+			<td>
+				299.96
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Response time (seconds)
+			</td>
+			<td>
+				1.48
+			</td>
+			<td>
+				2.1					
+			</td>
+		</tr>
+		<tr>
+			<td rowspan="3">
+				Update queries
+			</td>
+			<td>
+				Transaction rate (transactions / second)
+			</td>
+			<td>
+				193.21
+			</td>
+			<td>
+				152.84
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Concurrency
+			</td>
+			<td>
+				303.75
+			</td>
+			<td>
+				282.80
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Response time (seconds)
+			</td>
+			<td>
+				1.57
+			</td>
+			<td>
+				1.85				
+			</td>
+		</tr>
+		<tr>
+			<td rowspan="3">
+				Fortunes
+			</td>
+			<td>
+				Transaction rate (transactions / second)
+			</td>
+			<td>
+				492.31
+			</td>
+			<td>
+				478.5
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Concurrency
+			</td>
+			<td>
+				381.15
+			</td>
+			<td>
+				319.12
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Response time (seconds)
+			</td>
+			<td>
+				0.77
+			</td>
+			<td>
+				0.67
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<table>
+	<tbody>
+		<tr>
+			<td>
+				<figure>
+					<img src="HelidonMP-DB.png" style="height: 300px; width: 400px;">
+					<figcaption>
+						TFB Single Query Test
+					</figcaption>
+				</figure>
+			</td>
+
+			<td>
+				<figure>
+					<img src="HelidonMP-Query.png" style="height: 300px; width: 400px;">
+					<figcaption>
+						TFB Multiple Queries Test
+					</figcaption>
+				</figure>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<figure>
+					<img src="HelidonMP-Update.png" style="height: 300px; width: 400px;">
+					<figcaption>
+						TFB Update Queries Test
+					</figcaption>
+				</figure>
+			</td>
+
+			<td>
+				<figure>
+					<img src="HelidonMP-Fortune.png" style="height: 300px; width: 400px;">
+					<figcaption>
+						TFB Fortunes Test
+					</figcaption>
+				</figure>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<br>
+<hr>
+
+</body>
+</html>

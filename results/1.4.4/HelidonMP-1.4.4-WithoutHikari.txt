@@ -1,0 +1,174 @@
+--------------------------------------------------------------------------------
+VERIFYING DB
+--------------------------------------------------------------------------------
+Accessing URL http://tfb-server:8080/db: 
+Accessing URL http://tfb-server:8080/db: 
+--------------------------------------------------------------------------------
+VERIFYING QUERY COUNT FOR http://tfb-server:8080/db
+--------------------------------------------------------------------------------
+New configuration template added to /root/.siege
+Run siege -C to view the current settings in that file
+** SIEGE 4.0.4
+** Preparing 512 concurrent users for battle.
+The server is now under siege...
+Transactions:		         512 hits
+Availability:		      100.00 %
+Elapsed time:		        3.91 secs
+Data transferred:	        0.02 MB
+Response time:		        2.24 secs
+Transaction rate:	      130.95 trans/sec
+Throughput:		        0.00 MB/sec
+Concurrency:		      292.88
+Successful transactions:         512
+Failed transactions:	           0
+Longest transaction:	        3.88
+Shortest transaction:	        0.06
+ 
+
+   PASS for http://tfb-server:8080/db
+     Executed queries: 512/512
+   PASS for http://tfb-server:8080/db
+     Rows read: 506/512
+--------------------------------------------------------------------------------
+VERIFYING JSON
+--------------------------------------------------------------------------------
+Accessing URL http://tfb-server:8080/json: 
+Accessing URL http://tfb-server:8080/json: 
+   PASS for http://tfb-server:8080/json
+--------------------------------------------------------------------------------
+VERIFYING QUERY
+--------------------------------------------------------------------------------
+Accessing URL http://tfb-server:8080/queries?queries=2: 
+Accessing URL http://tfb-server:8080/queries?queries=2: 
+Accessing URL http://tfb-server:8080/queries?queries=0: 
+Accessing URL http://tfb-server:8080/queries?queries=0: 
+Accessing URL http://tfb-server:8080/queries?queries=foo: 
+Accessing URL http://tfb-server:8080/queries?queries=foo: 
+Accessing URL http://tfb-server:8080/queries?queries=501: 
+Accessing URL http://tfb-server:8080/queries?queries=501: 
+Accessing URL http://tfb-server:8080/queries?queries=: 
+Accessing URL http://tfb-server:8080/queries?queries=: 
+--------------------------------------------------------------------------------
+VERIFYING QUERY COUNT FOR http://tfb-server:8080/queries?queries=20
+--------------------------------------------------------------------------------
+** SIEGE 4.0.4
+** Preparing 512 concurrent users for battle.
+The server is now under siege...
+Transactions:		         512 hits
+Availability:		      100.00 %
+Elapsed time:		        4.04 secs
+Data transferred:	        0.31 MB
+Response time:		        2.26 secs
+Transaction rate:	      126.73 trans/sec
+Throughput:		        0.08 MB/sec
+Concurrency:		      286.04
+Successful transactions:         512
+Failed transactions:	           0
+Longest transaction:	        4.02
+Shortest transaction:	        0.16
+ 
+
+   PASS for http://tfb-server:8080/queries?queries=20
+     Executed queries: 10240/10240
+   PASS for http://tfb-server:8080/queries?queries=20
+     Rows read: 10128/10240
+--------------------------------------------------------------------------------
+VERIFYING UPDATE
+--------------------------------------------------------------------------------
+Accessing URL http://tfb-server:8080/updates?queries=2: 
+Accessing URL http://tfb-server:8080/updates?queries=2: 
+Accessing URL http://tfb-server:8080/updates?queries=0: 
+Accessing URL http://tfb-server:8080/updates?queries=0: 
+Accessing URL http://tfb-server:8080/updates?queries=foo: 
+Accessing URL http://tfb-server:8080/updates?queries=foo: 
+Accessing URL http://tfb-server:8080/updates?queries=501: 
+Accessing URL http://tfb-server:8080/updates?queries=501: 
+Accessing URL http://tfb-server:8080/updates?queries=: 
+Accessing URL http://tfb-server:8080/updates?queries=: 
+--------------------------------------------------------------------------------
+VERIFYING QUERY COUNT FOR http://tfb-server:8080/updates?queries=20
+--------------------------------------------------------------------------------
+** SIEGE 4.0.4
+** Preparing 512 concurrent users for battle.
+The server is now under siege...
+Transactions:		         512 hits
+Availability:		      100.00 %
+Elapsed time:		        4.82 secs
+Data transferred:	        0.31 MB
+Response time:		        2.67 secs
+Transaction rate:	      106.22 trans/sec
+Throughput:		        0.06 MB/sec
+Concurrency:		      283.42
+Successful transactions:         512
+Failed transactions:	           0
+Longest transaction:	        4.79
+Shortest transaction:	        0.03
+ 
+
+   PASS for http://tfb-server:8080/updates?queries=20
+     Executed queries: 20480/20480
+   PASS for http://tfb-server:8080/updates?queries=20
+     Rows read: 10128/10240
+   PASS for http://tfb-server:8080/updates?queries=20
+     Rows updated: 10128/10240
+--------------------------------------------------------------------------------
+VERIFYING FORTUNE
+--------------------------------------------------------------------------------
+Accessing URL http://tfb-server:8080/fortunes: 
+Accessing URL http://tfb-server:8080/fortunes: 
+--------------------------------------------------------------------------------
+VERIFYING QUERY COUNT FOR http://tfb-server:8080/fortunes
+--------------------------------------------------------------------------------
+** SIEGE 4.0.4
+** Preparing 512 concurrent users for battle.
+The server is now under siege...
+Transactions:		         512 hits
+Availability:		      100.00 %
+Elapsed time:		        2.43 secs
+Data transferred:	        0.90 MB
+Response time:		        1.23 secs
+Transaction rate:	      210.70 trans/sec
+Throughput:		        0.37 MB/sec
+Concurrency:		      259.00
+Successful transactions:         512
+Failed transactions:	           0
+Longest transaction:	        2.31
+Shortest transaction:	        0.20
+ 
+
+   PASS for http://tfb-server:8080/fortunes
+     Executed queries: 512/512
+   PASS for http://tfb-server:8080/fortunes
+     Rows read: 6077/6144
+--------------------------------------------------------------------------------
+VERIFYING PLAINTEXT
+--------------------------------------------------------------------------------
+Accessing URL http://tfb-server:8080/plaintext: 
+Accessing URL http://tfb-server:8080/plaintext: 
+   PASS for http://tfb-server:8080/plaintext
+Auditing /FrameworkBenchmarks/frameworks/Java/helidonmp:
+No problems to report
+wrk: Build time: 6s
+techempower/postgres:latest: Build time: 4s
+helidonmp: Build time: 12s
+helidonmp: Time starting database: 10s
+helidonmp: Time until accepting requests: 13s
+helidonmp: Verify time: 1m 24s
+helidonmp: Weld SE container 5be6986f-c005-4803-82b9-75b3ca949b70 shut down by shutdown hook
+helidonmp: Total test time: 2m 13s
+tfb: Total time building so far: 22s
+tfb: Total time verifying so far: 1m 24s
+tfb: Total execution time so far: 2m 24s
+================================================================================
+Verification Summary
+--------------------------------------------------------------------------------
+| helidonmp
+|       fortune       : PASS
+|       plaintext     : PASS
+|       db            : PASS
+|       update        : PASS
+|       json          : PASS
+|       query         : PASS
+================================================================================
+
+Results are saved in /FrameworkBenchmarks/results/20200603113843
